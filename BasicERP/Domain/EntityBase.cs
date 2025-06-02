@@ -11,7 +11,7 @@ namespace BasicERP.Domain
         public string Name { get; set; }
 
         [Required]
-        public bool isActive { get; set; }
+        public bool IsActive { get; set; }
 
         [Required]
         public DateTime CreationDate { get; set; }
@@ -24,7 +24,7 @@ namespace BasicERP.Domain
         public void GenerateNewEntity()
         {
             Id = Guid.NewGuid();
-            isActive = true;
+            IsActive = true;
             CreationDate = DateTime.Now;
             ModificationDate = DateTime.Now;
         }
