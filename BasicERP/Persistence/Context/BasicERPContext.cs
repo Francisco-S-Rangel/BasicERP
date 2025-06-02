@@ -5,7 +5,7 @@ namespace BasicERP.Persistence.Context
 {
     public class BasicERPContext : DbContext
     {
-        public BasicERPContext(DbContextOptions<BasicERPContext> options) : base()
+        public BasicERPContext(DbContextOptions<BasicERPContext> options) : base(options)
         {
 
         }
