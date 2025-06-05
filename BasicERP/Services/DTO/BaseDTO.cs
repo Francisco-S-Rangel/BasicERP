@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BasicERP.Domain
+namespace BasicERP.Services.DTO
 {
-    public abstract class EntityBase
+    public abstract class BaseDTO
     {
-        [Key]
         public Guid Id { get; set; }
 
         [Required]
@@ -21,5 +20,12 @@ namespace BasicERP.Domain
 
         public string? ImageUrl { get; set; }
 
+        public void GenerateNewEntity()
+        {
+            Id = Guid.NewGuid();
+            IsActive = true;
+            CreationDate = DateTime.Now;
+            ModificationDate = DateTime.Now;
+        }
     }
 }

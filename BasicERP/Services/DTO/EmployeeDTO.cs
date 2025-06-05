@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BasicERP.Services.DTO
 {
-    public class EmployeeDTO
+    public class EmployeeDTO : BaseDTO
     {
         [Required]
         public string DocumentId { get; set; }

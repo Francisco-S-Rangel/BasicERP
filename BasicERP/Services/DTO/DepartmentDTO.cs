@@ -2,7 +2,7 @@
 
 namespace BasicERP.Services.DTO
 {
-    public class DepartmentDTO
+    public class DepartmentDTO : BaseDTO
     {
         [Required]
         public string Acronym { get; set; }
