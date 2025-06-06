@@ -24,14 +24,13 @@ namespace BasicERP.Controllers
             try
             {
                 var departments = _context.Departments.ToList();
-
                 var departmentDTOList = departments.Select(department => department.MapDepartment()).ToList();
 
                 return Ok(new Result<List<DepartmentDTO>>("Departments found.", departmentDTOList));
             }
             catch (Exception ex)
             {
-                return BadRequest(new Result<object>(ex.Message));
+                return StatusCode(500, new Result<object>($"An internal error occorred: {ex.Message}"));
             }
         }
 
@@ -47,7 +46,7 @@ namespace BasicERP.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new Result<object>(ex.Message));
+                return StatusCode(500, new Result<object>($"An internal error occorred: {ex.Message}"));
             }
         }
 

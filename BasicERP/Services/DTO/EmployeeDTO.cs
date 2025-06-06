@@ -15,7 +15,7 @@ namespace BasicERP.Services.DTO
         public string Role { get; set; }
 
         [Required]
-        public Gender Gernder { get; set; }
+        public Gender Gender { get; set; }
 
         [Required]
         public Guid DepartmentId { get; set; }
