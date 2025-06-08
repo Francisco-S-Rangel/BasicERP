@@ -1,5 +1,6 @@
 ﻿using BasicERP.Utilities.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace BasicERP.Services.DTO
 {
@@ -9,7 +10,7 @@ namespace BasicERP.Services.DTO
         public string DocumentId { get; set; }
 
         [Required]
-        public DateOnly BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
 
         [Required]
         public string Role { get; set; }

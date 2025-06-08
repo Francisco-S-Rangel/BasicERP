@@ -24,8 +24,8 @@ namespace BasicERP.Services.DTO
         {
             Id = Guid.NewGuid();
             IsActive = true;
-            CreationDate = DateTime.Now;
-            ModificationDate = DateTime.Now;
+            CreationDate = DateTime.UtcNow;
+            ModificationDate = DateTime.UtcNow;
         }
     }
 }

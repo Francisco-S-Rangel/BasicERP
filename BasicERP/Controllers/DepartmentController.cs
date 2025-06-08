@@ -37,9 +37,13 @@ namespace BasicERP.Controllers
         [HttpGet("{id}")]
         public IActionResult GetDepartmentById(Guid id)
         {
+            var department = _context.Departments.Find(id);
+
+            if (department == null)
+                return NotFound($"Department with ID {id} not found.");
+
             try
             {
-                var department = _context.Departments.Find(id);
                 var departmentDTO = department.MapDepartment();
 
                 return Ok(new Result<DepartmentDTO>("Deepartment found.", departmentDTO));
@@ -68,7 +72,7 @@ namespace BasicERP.Controllers
                 updateDepartment.Description = departmentDTO.Description;
                 updateDepartment.ImageUrl = departmentDTO.ImageUrl;
                 updateDepartment.IsActive = departmentDTO.IsActive;
-                updateDepartment.ModificationDate = DateTime.Now;
+                updateDepartment.ModificationDate = DateTime.UtcNow;
 
                 _context.Departments.Update(updateDepartment);
                 _context.SaveChanges();
@@ -96,7 +100,28 @@ namespace BasicERP.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new Result<object>($"An error occorred while creadting the department: {ex.Message}."));
+                return StatusCode(500, new Result<object>($"An error occorred while creating the department: {ex.Message}."));
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteDepartment(Guid id)
+        {
+            var department = _context.Departments.Find(id);
+
+            if (department == null)
+                return BadRequest($"Department with ID {id} not found.");
+
+            try
+            {
+                _context.Departments.Remove(department);
+                _context.SaveChanges();
+
+                return Ok(new Result<object>("Department deleted."));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new Result<object>($"An internal error occorred: {ex.Message}"));
             }
         }
     }

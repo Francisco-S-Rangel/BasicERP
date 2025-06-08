@@ -9,7 +9,7 @@ namespace BasicERP.Domain
         public string DocumentId { get; set; }
 
         [Required]
-        public DateOnly BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
 
         [Required]
         public string Role { get; set; }
