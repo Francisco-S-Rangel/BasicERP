@@ -125,11 +125,30 @@ namespace BasicERP.Controllers
             }
         }
 
-        /*[Route("{name}/getDepartmentsByNameOrAcronym")]
+        [Route("{name}/getDepartmentsByNameOrAcronym")]
         [HttpGet]
         public IActionResult GetDepartmentsByNameOrAcronym(string name)
         {
+            var trimmedName = name.ToLower().Trim();
+            var departments = _context.Departments.Where(department =>
+                department.Name.ToLower().Contains(trimmedName) ||
+                department.Acronym.ToLower().Contains(trimmedName)
+            ).ToList();
 
-        }*/
+            if (departments.Count == 0)
+                return NotFound($"No department was found with the name or acronym: {name}");
+
+            try
+            {
+                var departmentDTOList = departments.Select(department =>
+                    department.MapDepartment()).ToList();
+
+                return Ok(new Result<List<DepartmentDTO>>("Departments found.", departmentDTOList));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new Result<object>($"An internal error occorred: {ex.Message}"));
+            }
+        }
     }
 }
