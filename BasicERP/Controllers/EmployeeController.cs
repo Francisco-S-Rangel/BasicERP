@@ -1,4 +1,5 @@
-﻿using BasicERP.Persistence.Context;
+﻿using BasicERP.Domain;
+using BasicERP.Persistence.Context;
 using BasicERP.Persistence.Mapping;
 using BasicERP.Services.DTO;
 using BasicERP.Utilities.Helpers;
@@ -112,7 +113,7 @@ namespace BasicERP.Controllers
             var employee = _context.Employees.Find(id);
 
             if (employee == null)
-                return BadRequest($"Employee with ID {id} not found.");
+                return NotFound($"Employee with ID {id} not found.");
 
             try
             {
@@ -120,6 +121,56 @@ namespace BasicERP.Controllers
                 _context.SaveChanges();
 
                 return Ok(new Result<object>("Employee deleted."));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new Result<object>($"An internal error occorred: {ex.Message}"));
+            }
+        }
+
+        [Route("{name}/getEmployeesByName")]
+        [HttpGet]
+        public IActionResult GetEmployeesByName(string name)
+        {
+            var employees = _context.Employees.Where(employee =>
+                employee.Name.ToLower().Contains(name.ToLower().Trim())).ToList();
+
+            if (employees.Count == 0)
+                return NotFound($"No employee was found with the name: {name}.");
+
+            try
+            {
+                var employeeDTOList = employees.Select(employee =>
+                    employee.MapEmployee()).ToList();
+
+                return Ok(new Result<List<EmployeeDTO>>("Employees found.", employeeDTOList));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new Result<object>($"An internal error occorred: {ex.Message}"));
+            }
+        }
+
+        [Route("{departmentId}/getEmployeesByDepartmentId")]
+        [HttpGet]
+        public IActionResult GetEmployeesByDepartmentId(Guid departmentId)
+        {
+            var department = _context.Departments.Find(departmentId);
+
+            if (department == null)
+                return NotFound($"Department with ID {departmentId} not found.");
+
+            try
+            {
+                var employees = _context.Employees.Where(employee =>
+                employee.DepartmentId == departmentId).ToList();
+
+                if (employees.Count == 0)
+                    return NotFound("No employee was found within this department.");
+
+                var employeeDTOList = employees.Select(employee => employee.MapEmployee()).ToList();
+
+                return Ok(new Result<List<EmployeeDTO>>("Employees found.", employeeDTOList));
             }
             catch (Exception ex)
             {

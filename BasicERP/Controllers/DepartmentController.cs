@@ -110,7 +110,7 @@ namespace BasicERP.Controllers
             var department = _context.Departments.Find(id);
 
             if (department == null)
-                return BadRequest($"Department with ID {id} not found.");
+                return NotFound($"Department with ID {id} not found.");
 
             try
             {
@@ -124,5 +124,12 @@ namespace BasicERP.Controllers
                 return StatusCode(500, new Result<object>($"An internal error occorred: {ex.Message}"));
             }
         }
+
+        /*[Route("{name}/getDepartmentsByNameOrAcronym")]
+        [HttpGet]
+        public IActionResult GetDepartmentsByNameOrAcronym(string name)
+        {
+
+        }*/
     }
 }
